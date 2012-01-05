@@ -153,19 +153,17 @@ class LangDirsLib(object):
         try:
             if prefix not in self._blob_imports_from_prefix_cache:
                 if prefix:
+                    imports = set()
                     for dir in self.dirs:
                         importables = self._importables_from_dir(dir)
                         if prefix[0] in importables:
                             sub_importables = self._importables_from_dir(
                                 join(dir, *prefix))
-                            imports = set(
+                            imports = imports.union(set(
                                 (name, is_dir_import)
                                 for name, (_, _, is_dir_import)
                                 in sub_importables.items()
-                            )
-                            break
-                    else:
-                        imports = set()
+                            ))
                 else:
                     imports = set()
                     for dir in self.dirs:
